@@ -41,7 +41,7 @@ Starter template for React Native projects with TypeScript. Use this template fo
 
 ## 📫 Let's Connect
 
-- LinkedIn: [Your LinkedIn](Link-to-LinkedIn)
+- LinkedIn: [Krunal Patel](https://in.linkedin.com/in/krunal-patel-a0382b1b3)
 - Twitter: [@kp_MobileTechie](https://twitter.com/kp_MobileTechie)
 - Portfolio: [Your Portfolio](Link-to-Portfolio)
 
