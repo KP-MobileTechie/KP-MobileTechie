@@ -19,7 +19,27 @@ I'm a passionate React Native Developer based in India. Crafting mobile experien
 
 ## 🌱 Currently Learning
 
-I'm currently exploring the world of [Current Learning Focus].
+## Currently Learning
+
+I'm a seasoned React Native developer with over 3 years of hands-on experience, and I'm passionate about staying at the forefront of technology. Currently, I'm immersing myself in the following areas:
+
+### Exploring React Native Libraries
+
+Continuously expanding my knowledge of the React Native ecosystem by exploring and implementing various third-party libraries. Recent focus includes libraries for improved navigation, enhanced UI components, and state management.
+
+### Advanced TypeScript Usage
+
+Delving deeper into TypeScript to leverage its advanced features for more robust and scalable React Native applications. Exploring advanced typing patterns, generics, and leveraging TypeScript in conjunction with React.
+
+### UI/UX Design Principles
+
+Sharpening my understanding of UI/UX design principles to create more intuitive and visually appealing mobile applications. Collaborating closely with design teams and integrating best practices into the development workflow.
+
+### Continuous Integration/Continuous Deployment (CI/CD)
+
+Implementing CI/CD pipelines to automate the testing, building, and deployment processes. Exploring tools like Jenkins, GitHub Actions, and Fastlane to streamline the development lifecycle and improve overall project efficiency.
+
+I believe that a commitment to continuous learning is crucial in the ever-evolving field of mobile development. Stay tuned for updates as I apply these learnings to upcoming projects!
 
 ## 📈 GitHub Stats
 
