@@ -42,7 +42,7 @@ Starter template for React Native projects with TypeScript. Use this template fo
 ## 📫 Let's Connect
 
 - LinkedIn: [Your LinkedIn](Link-to-LinkedIn)
-- Twitter: [Your Twitter](Link-to-Twitter)
+- Twitter: [@kp_MobileTechie](https://twitter.com/kp_MobileTechie)
 - Portfolio: [Your Portfolio](Link-to-Portfolio)
 
 Feel free to reach out for collaboration, questions, or just to connect! 😊
