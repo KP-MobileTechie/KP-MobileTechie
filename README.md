@@ -63,6 +63,6 @@ Starter template for React Native projects with TypeScript. Use this template fo
 
 - LinkedIn: [Krunal Patel](https://in.linkedin.com/in/krunal-patel-a0382b1b3)
 - Twitter: [@kp_MobileTechie](https://twitter.com/kp_MobileTechie)
-- Portfolio: [Your Portfolio](Link-to-Portfolio)
+- Portfolio: [kp-mobiletechie](https://kp-mobiletechie.vercel.app)
 
 Feel free to reach out for collaboration, questions, or just to connect! 😊
