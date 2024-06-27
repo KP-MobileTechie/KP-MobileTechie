@@ -61,5 +61,4 @@ Starter template for React Native projects with TypeScript. Use this template fo
 
 ## 📫 Let's Connect
 
-
 Feel free to reach out for collaboration, questions, or just to connect! 😊
