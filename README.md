@@ -47,17 +47,17 @@ I believe that a commitment to continuous learning is crucial in the ever-evolvi
 
 ## 🛠️ Projects
 
-### [ReactNativeAwesomeApp](Link-to-Repo)
+### [RealMOfflineApp](https://github.com/KP-MobileTechie/RealMOfflineApp)
 
-A showcase React Native application with fantastic features. Dive into the project to witness my skills in action.
+RealMOfflineApp is a robust mobile solution that enables seamless data access, storage, and synchronization without requiring constant internet connectivity.
 
-### [ReduxMagicState](Link-to-Repo)
+### [PropetryBookingApp](https://github.com/KP-MobileTechie/PropetryBookingApp)
 
-A collection of Redux utilities and state management magic. Explore this repository to see efficient state management.
+From residential homes to commercial spaces, manage your entire property journey in one place—conveniently and securely.
 
-### [TypeScriptReactNativeStarter](Link-to-Repo)
+### [GestureRating](https://github.com/KP-MobileTechie/GestureRating)
 
-Starter template for React Native projects with TypeScript. Use this template for a quick start on TypeScript in React Native.
+This modern approach offers a fun, interactive, and hands-free experience—perfect for content platforms, feedback systems, or entertainment apps.
 
 ## 📫 Let's Connect
 
