@@ -1,4 +1,4 @@
-# 👋 Krunal Patel — Software Engineer | React Native Developer
+# 👋 Krunal Patel - Software Engineer | React Native Developer
 
 I build high-quality mobile applications for iOS and Android using React Native, with a focus on performance, scalability, and real-world usability.
 
@@ -12,7 +12,7 @@ I build high-quality mobile applications for iOS and Android using React Native,
 
 I’m a Software Engineer with ~4 years of experience specializing in React Native.
 
-My work focuses on building production-grade mobile apps — not just features, but complete user journeys. I’ve worked across fintech, onboarding systems, maps/navigation, and service-based platforms.
+My work focuses on building production-grade mobile apps - not just features, but complete user journeys. I’ve worked across fintech, onboarding systems, maps/navigation, and service-based platforms.
 
 I enjoy solving practical product problems, improving app performance, and working closely with teams to ship reliable software.
 
