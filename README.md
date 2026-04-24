@@ -1,64 +1,124 @@
-# Hi, I'm Krunal Patel! 👋
+# 👋 Krunal Patel — Software Engineer | React Native Developer
 
-I'm a passionate React Native Developer based in India. Crafting mobile experiences that users love is my forte. I specialize in JavaScript, TypeScript, Redux, HTML, and CSS.
+I build high-quality mobile applications for iOS and Android using React Native, with a focus on performance, scalability, and real-world usability.
 
-🚀 Let's build amazing mobile applications together!
+🌐 Portfolio: https://krunal.vercel.app/  
+📱 Mobile Portfolio: https://kp-mobiletechie.vercel.app/  
+💻 GitHub: https://github.com/KP-MobileTechie  
 
-## 🔧 Technologies & Tools
+---
 
-![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white&style=flat-square)
-![React Native](https://img.shields.io/badge/-React%20Native-61DAFB?logo=react&logoColor=white&style=flat-square)
-![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=white&style=flat-square)
-![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat-square)
-![Redux](https://img.shields.io/badge/-Redux-764ABC?logo=redux&logoColor=white&style=flat-square)
-![HTML](https://img.shields.io/badge/-HTML-E34F26?logo=html5&logoColor=white&style=flat-square)
-![CSS](https://img.shields.io/badge/-CSS-1572B6?logo=css3&logoColor=white&style=flat-square)
-![Git](https://img.shields.io/badge/-Git-F05032?logo=git&logoColor=white&style=flat-square)
-![GitHub](https://img.shields.io/badge/-GitHub-181717?logo=github&logoColor=white&style=flat-square)
-![VSCode](https://img.shields.io/badge/-VSCode-007ACC?logo=visual-studio-code&logoColor=white&style=flat-square)
+## About Me
 
-## 🌱 Currently Learning
+I’m a Software Engineer with ~4 years of experience specializing in React Native.
 
-## Currently Learning
+My work focuses on building production-grade mobile apps — not just features, but complete user journeys. I’ve worked across fintech, onboarding systems, maps/navigation, and service-based platforms.
 
-I'm a seasoned React Native developer with over 3 years of hands-on experience, and I'm passionate about staying at the forefront of technology. Currently, I'm immersing myself in the following areas:
+I enjoy solving practical product problems, improving app performance, and working closely with teams to ship reliable software.
 
-### Exploring React Native Libraries
+- 📍 India  
+- 🗣️ Gujarati, English, Hindi  
 
-Continuously expanding my knowledge of the React Native ecosystem by exploring and implementing various third-party libraries. Recent focus includes libraries for improved navigation, enhanced UI components, and state management.
+---
 
-### Advanced TypeScript Usage
+## What I’m Working On
 
-Delving deeper into TypeScript to leverage its advanced features for more robust and scalable React Native applications. Exploring advanced typing patterns, generics, and leveraging TypeScript in conjunction with React.
+- Enhancing app performance and reducing crashes in production apps  
+- Designing scalable and maintainable React Native architectures  
+- Improving API integration patterns and data handling  
+- Exploring advanced TypeScript usage in mobile apps  
 
-### UI/UX Design Principles
+---
 
-Sharpening my understanding of UI/UX design principles to create more intuitive and visually appealing mobile applications. Collaborating closely with design teams and integrating best practices into the development workflow.
+## Tech Stack
 
-### Continuous Integration/Continuous Deployment (CI/CD)
+### Mobile & Frontend
+![React Native](https://img.shields.io/badge/React%20Native-20232A?logo=react&logoColor=61DAFB)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
 
-Implementing CI/CD pipelines to automate the testing, building, and deployment processes. Exploring tools like Jenkins, GitHub Actions, and Fastlane to streamline the development lifecycle and improve overall project efficiency.
+### Languages
+![JavaScript](https://img.shields.io/badge/JavaScript-000?logo=javascript)
+![TypeScript](https://img.shields.io/badge/TypeScript-000?logo=typescript)
 
-I believe that a commitment to continuous learning is crucial in the ever-evolving field of mobile development. Stay tuned for updates as I apply these learnings to upcoming projects!
+### State Management
+Redux • Redux Thunk • Redux Saga
 
-## 📈 GitHub Stats
+### APIs & Data
+GraphQL • REST APIs • Firebase
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=KP-MobileTechie&show_icons=true&hide_title=true&hide=issues&count_private=true&theme=radical)
+### Mobile & Native
+Android • Kotlin • Java • Xcode • Android Studio
 
-## 🛠️ Projects
+### Tools & Analytics
+Git • GitLab • AppsFlyer • Google Analytics
 
-### [RealMOfflineApp](https://github.com/KP-MobileTechie/RealMOfflineApp)
+### Testing
+Unit Testing
 
-RealMOfflineApp is a robust mobile solution that enables seamless data access, storage, and synchronization without requiring constant internet connectivity.
+---
 
-### [PropetryBookingApp](https://github.com/KP-MobileTechie/PropetryBookingApp)
+## Experience Highlights
 
-From residential homes to commercial spaces, manage your entire property journey in one place—conveniently and securely.
+- Built investment-related features including mutual funds, fixed deposits, and SIP flows  
+- Developed onboarding systems including registration, KYC, and document verification  
+- Worked on secure transaction-related user flows  
+- Integrated Stripe for payment processing  
+- Built map-based features using Google Maps APIs  
+- Worked on route optimization and delivery-focused applications  
+- Improved performance and fixed crashes in existing React Native apps  
+- Integrated push notifications using OneSignal  
+- Built review and feedback systems for service platforms  
+- Contributed to service marketplace / booking-style applications  
+- Earlier experience includes Android development and WebRTC-based video features  
 
-### [GestureRating](https://github.com/KP-MobileTechie/GestureRating)
+---
 
-This modern approach offers a fun, interactive, and hands-free experience—perfect for content platforms, feedback systems, or entertainment apps.
+## Types of Projects I Build
 
-## 📫 Let's Connect
+- Fintech and investment applications  
+- KYC and onboarding systems  
+- Delivery and route optimization apps  
+- Maps and navigation-based features  
+- Payment-integrated mobile apps  
+- Service marketplace platforms  
+- Feedback and review systems  
 
-Feel free to reach out for collaboration, questions, or just to connect! 😊
+---
+
+## Selected Work (Case-Style)
+
+- Designed onboarding flows with KYC verification and secure user activation  
+- Built investment journeys supporting both one-time and SIP flows  
+- Implemented route optimization logic for delivery efficiency  
+- Improved performance and stability in legacy apps by debugging and refactoring  
+- Integrated third-party services like Stripe, Firebase, and analytics tools  
+- Developed real-time and location-based features using maps and APIs  
+
+---
+
+## Currently Exploring
+
+- Advanced TypeScript patterns in React Native  
+- Mobile app performance optimization techniques  
+- Scalable architecture for large React Native applications  
+- Better testing strategies for mobile apps  
+
+---
+
+## Top Repositories
+
+- 🔗 https://github.com/KP-MobileTechie/RealMOfflineApp  
+- 🔗 https://github.com/KP-MobileTechie/PropetryBookingApp  
+- 🔗 https://github.com/KP-MobileTechie/GestureRating  
+
+---
+
+## Let’s Connect
+
+- GitHub: https://github.com/KP-MobileTechie  
+- Portfolio: https://krunal.vercel.app/  
+- Mobile Portfolio: https://kp-mobiletechie.vercel.app/  
+- LinkedIn: https://in.linkedin.com/in/krunal-patel-a0382b1b3 
+- Email: krunal.frontend@gmail.com
+
+I’m open to freelance, contract, and full-time opportunities.
