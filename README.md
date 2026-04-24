@@ -10,7 +10,7 @@ I build high-quality mobile applications for iOS and Android using React Native,
 
 ## About Me
 
-I’m a Software Engineer with ~4 years of experience specializing in React Native.
+I’m a Software Engineer with 5 years of experience specializing in React Native.
 
 My work focuses on building production-grade mobile apps - not just features, but complete user journeys. I’ve worked across fintech, onboarding systems, maps/navigation, and service-based platforms.
 
