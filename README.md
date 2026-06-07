@@ -183,13 +183,13 @@ Uber-style taxi and carpooling platform with live driver tracking, route optimiz
 
 <br/><br/>
 
-<img src="./profile-summary-card-output/tokyonight/0-profile-details.svg" alt="Profile details" width="100%"/>
+<img src="./profile-cards/0-profile-details.png" alt="Profile details" width="100%"/>
 
-<img src="./profile-summary-card-output/tokyonight/3-stats.svg" alt="GitHub stats" width="48%"/>
-<img src="./profile-summary-card-output/tokyonight/1-repos-per-language.svg" alt="Top languages by repo" width="48%"/>
+<img src="./profile-cards/3-stats.png" alt="GitHub stats" width="48%"/>
+<img src="./profile-cards/1-repos-per-language.png" alt="Top languages by repo" width="48%"/>
 
-<img src="./profile-summary-card-output/tokyonight/2-most-commit-language.svg" alt="Top languages by commit" width="48%"/>
-<img src="./profile-summary-card-output/tokyonight/4-productive-time.svg" alt="Productive time" width="48%"/>
+<img src="./profile-cards/2-most-commit-language.png" alt="Top languages by commit" width="48%"/>
+<img src="./profile-cards/4-productive-time.png" alt="Productive time" width="48%"/>
 
 <br/><br/>
 
