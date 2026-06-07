@@ -156,9 +156,9 @@ Uber-style taxi and carpooling platform with live driver tracking, route optimiz
 | 🤖 [ai-api-hub](https://github.com/KP-MobileTechie/ai-api-hub) | Live-tested directory of AI and LLM APIs with free tiers highlighted · [Live ↗](https://ai-api-hub.vercel.app) | `Next.js` `TypeScript` |
 | 🧭 [glance](https://github.com/KP-MobileTechie/glance) | Local-first browser start page with bento-grid widgets and shareable themes · [Live ↗](https://glance-blush.vercel.app) | `Next.js` `TypeScript` |
 | ⌨️ [keyflow](https://github.com/KP-MobileTechie/keyflow) | Terminal-style typing trainer with live WPM and per-key error heatmap · [Live ↗](https://keyflow-rho.vercel.app) | `Next.js` `TypeScript` |
-| 🔗 [linkdeck](https://github.com/KP-MobileTechie/linkdeck) | Link-in-bio deck builder · [Live ↗](https://linkdeck-weld.vercel.app) | `Next.js` `TypeScript` |
-| 🎮 [dropfour](https://github.com/KP-MobileTechie/dropfour) | Connect Four game with clean UI · [Live ↗](https://dropfour-eta.vercel.app) | `Next.js` `TypeScript` |
-| 📸 Snapfolio | AI case study generator for developer portfolios · [Live ↗](https://snapfolio.vercel.app) | `Next.js` `AI` |
+| 🔗 [linkdeck](https://github.com/KP-MobileTechie/linkdeck) | Short links with private click analytics on Neon Postgres · [Live ↗](https://linkdeck-weld.vercel.app) | `Next.js` `TypeScript` |
+| 🎮 [dropfour](https://github.com/KP-MobileTechie/dropfour) | Connect Four vs a minimax + alpha-beta AI, three difficulties · [Live ↗](https://dropfour-eta.vercel.app) | `Next.js` `TypeScript` |
+| 📸 [snapfolio](https://github.com/KP-MobileTechie/snapfolio) | Travel photo wall with blur-up masonry, EXIF photo map and direct-to-Cloudinary uploads · [Live ↗](https://snapfolio-eosin.vercel.app) | `Next.js` `TypeScript` |
 | 🧠 AICareerGrowthPilot | AI-powered career growth platform · *launching soon* | `Next.js` `TypeScript` `AI` |
 
 ---
