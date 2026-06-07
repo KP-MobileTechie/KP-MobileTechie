@@ -5,7 +5,7 @@
 
 <!-- ============================ TYPING EFFECT ============================ -->
 <a href="https://github.com/KP-MobileTechie">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=900&color=22D3EE&center=true&vCenter=true&width=520&lines=Senior+React+Native+Developer;Fintech+%7C+Crypto+%7C+Healthcare+%7C+Real+Estate;5%2B+Years+Shipping+iOS+%26+Android+Apps;TypeScript+%E2%80%A2+GraphQL+%E2%80%A2+Firebase+%E2%80%A2+Redux;Open+to+Remote+%26+International+Roles" alt="Typing animation"/>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=3000&pause=900&color=22D3EE&center=true&vCenter=true&width=620&height=46&lines=Senior+React+Native+Developer;Fintech+%7C+Crypto+%7C+Healthcare+%7C+Real+Estate;5%2B+Years+Shipping+iOS+%26+Android+Apps;TypeScript+%E2%80%A2+GraphQL+%E2%80%A2+Firebase+%E2%80%A2+Redux;Open+to+Remote+%26+International+Roles" alt="Typing animation"/>
 </a>
 
 <!-- ============================ VISITOR COUNTER + STATUS ============================ -->
