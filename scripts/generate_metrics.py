@@ -53,20 +53,17 @@ def defs_block(p):
 
 
 def base_style():
+    # STATIC-FIRST: every element is fully visible by default (opacity 1, no
+    # hidden dash offsets). Animations are enhancement-only and can never leave
+    # content hidden, so the card renders correctly even if animation never runs.
     return f'''<style>
     text {{ font-family: {FONT}; }}
-    @keyframes popin {{ from {{ opacity: 0; transform: translateY(8px) scale(.92); }}
-                        to {{ opacity: 1; transform: translateY(0) scale(1); }} }}
-    @keyframes draw {{ to {{ stroke-dashoffset: 0; }} }}
-    @keyframes pulse {{ 0%,100% {{ opacity: .55; }} 50% {{ opacity: 1; }} }}
-    .pop {{ opacity: 0; animation: popin .7s cubic-bezier(.2,.8,.2,1) forwards; transform-box: fill-box; transform-origin: center; }}
-    .pop2 {{ animation-delay: .12s; }}
-    .pop3 {{ animation-delay: .24s; }}
-    .drawline {{ animation: draw 1.4s ease forwards; }}
-    .glowpulse {{ animation: pulse 3s ease-in-out infinite; }}
+    @keyframes fadein {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
+    @keyframes pulse {{ 0%,100% {{ opacity: .5; }} 50% {{ opacity: 1; }} }}
+    .fade {{ animation: fadein .9s ease-out; }}
+    .glowpulse {{ animation: pulse 3.5s ease-in-out infinite; }}
     @media (prefers-reduced-motion: reduce) {{
-      .pop {{ animation: none; opacity: 1; transform: none; }}
-      .drawline {{ animation: none; stroke-dashoffset: 0 !important; }}
+      .fade {{ animation: none; }}
       .glowpulse {{ animation: none; opacity: 1; }}
     }}
   </style>'''
@@ -149,55 +146,71 @@ def compute(days):
 
 
 def streak_svg(m):
-    W, H, P = 495, 195, "s"
+    W, H, P = 495, 200, "s"
     col = W / 3
     cx = col * 1.5
+    cy = 84
+    r = 40
+    # visible fraction of the ring = current / longest (caps at full)
+    frac = min(m["current"] / m["longest"], 1.0) if m["longest"] else 0.0
+    circ = 2 * 3.14159265 * r
+    dash = f'{circ*frac:.1f} {circ:.1f}'
 
-    def rng(r):
-        a, b = r
+    def rng(rr):
+        a, b = rr
         if not a:
             return "-"
-        return fmt_date(a) if a == b else f"{fmt_date(a)} - {fmt_date(b)}"
+        return fmt_date(a) if a == b else f"{fmt_date(a)} → {fmt_date(b)}"
 
-    def panel(x):
-        return (f'<rect x="{x+14:.0f}" y="30" width="{col-28:.0f}" height="{H-60}" rx="10" '
-                f'fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.07)"/>')
+    def panel(x, accent):
+        return (f'<g>'
+                f'<rect x="{x+13:.0f}" y="26" width="{col-26:.0f}" height="{H-52}" rx="14" '
+                f'fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/>'
+                f'<rect x="{x+13:.0f}" y="26" width="{col-26:.0f}" height="2.5" rx="1.2" '
+                f'fill="{accent}" fill-opacity="0.55"/>'
+                f'</g>')
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="GitHub streak: {m['current']} day current streak, {m['longest']} longest, {m['total']} total contributions">
   {defs_block(P)}
   {base_style()}
   <style>
-    .side {{ font: 600 24px {MONO}; fill: {TEXT}; }}
-    .cur {{ font: 700 36px {MONO}; fill: {ACCENT}; }}
-    .lab {{ font: 400 10px {FONT}; fill: {MUTED}; letter-spacing: 1.6px; }}
-    .clab {{ font: 700 11px {FONT}; fill: {LABEL}; letter-spacing: 1.6px; }}
-    .date {{ font: 400 10px {MONO}; fill: {MUTED}; }}
+    .side {{ font: 700 27px {MONO}; fill: {TEXT}; letter-spacing: -.5px; }}
+    .cur {{ font: 800 42px {MONO}; fill: {TEXT}; letter-spacing: -1px; }}
+    .unit {{ font: 600 10px {FONT}; fill: {MUTED}; letter-spacing: 2px; }}
+    .lab {{ font: 700 9.5px {FONT}; fill: {MUTED}; letter-spacing: 2px; }}
+    .clab {{ font: 800 10px {FONT}; fill: {LABEL}; letter-spacing: 2.4px; }}
+    .date {{ font: 400 9px {MONO}; fill: {MUTED}; }}
     .c {{ text-anchor: middle; }}
   </style>
   {panel_bg(W, H, P)}
-  {panel(0)}{panel(col)}{panel(col*2)}
+  {panel(0, ACCENT)}{panel(col, LABEL)}{panel(col*2, FIRE)}
 
-  <g class="pop">
-    <text class="side c" x="{col*0.5:.0f}" y="82">{m['total']}</text>
-    <text class="lab c" x="{col*0.5:.0f}" y="108">TOTAL</text>
-    <text class="date c" x="{col*0.5:.0f}" y="150">{rng(m['total_range'])}</text>
-  </g>
+  <g class="fade">
+    <!-- TOTAL -->
+    <text class="side c" x="{col*0.5:.0f}" y="92" fill="{ACCENT}" filter="url(#{P}-glow)" opacity="0.9">{m['total']}</text>
+    <text class="side c" x="{col*0.5:.0f}" y="92">{m['total']}</text>
+    <text class="lab c" x="{col*0.5:.0f}" y="118">TOTAL CONTRIBUTIONS</text>
+    <text class="date c" x="{col*0.5:.0f}" y="158">{rng(m['total_range'])}</text>
 
-  <g class="pop pop2">
-    <circle cx="{cx:.0f}" cy="72" r="34" stroke="rgba(255,255,255,.08)" stroke-width="4"/>
-    <circle class="drawline glowpulse" cx="{cx:.0f}" cy="72" r="34" stroke="url(#{P}-ring)" stroke-width="4"
-            stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="214"
-            transform="rotate(-90 {cx:.0f} 72)" filter="url(#{P}-glow)"/>
-    <text class="cur c" x="{cx:.0f}" y="84">{m['current']}</text>
-    <text class="clab c" x="{cx:.0f}" y="124">CURRENT STREAK</text>
-    <text class="date c" x="{cx:.0f}" y="150">{rng(m['current_range'])}</text>
-    <path transform="translate({cx-7:.0f},22) scale(0.75)" fill="{FIRE}" filter="url(#{P}-glow)" d="M9 0c.5 3-1.7 4.3-2.8 5.8C4.9 7.6 4 9.3 4 11.2 4 14.4 6.2 17 9 17s5-2.6 5-5.8c0-2.4-1.4-3.9-2.3-5.4C10.9 4.5 11 2 9 0z"/>
-  </g>
+    <!-- CURRENT (hero) -->
+    <circle cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
+    <circle class="glowpulse" cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="url(#{P}-ring)" stroke-width="5"
+            stroke-linecap="round" stroke-dasharray="{dash}"
+            transform="rotate(-90 {cx:.0f} {cy})" filter="url(#{P}-glow)"/>
+    <circle cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="url(#{P}-ring)" stroke-width="2.5"
+            stroke-linecap="round" stroke-dasharray="{dash}"
+            transform="rotate(-90 {cx:.0f} {cy})"/>
+    <path transform="translate({cx-8:.0f},20) scale(0.85)" fill="{FIRE}" filter="url(#{P}-glow)" d="M9 0c.5 3-1.7 4.3-2.8 5.8C4.9 7.6 4 9.3 4 11.2 4 14.4 6.2 17 9 17s5-2.6 5-5.8c0-2.4-1.4-3.9-2.3-5.4C10.9 4.5 11 2 9 0z"/>
+    <text class="cur c" x="{cx:.0f}" y="{cy+6}">{m['current']}</text>
+    <text class="unit c" x="{cx:.0f}" y="{cy+22}">DAYS</text>
+    <text class="clab c" x="{cx:.0f}" y="152">CURRENT STREAK</text>
+    <text class="date c" x="{cx:.0f}" y="170">{rng(m['current_range'])}</text>
 
-  <g class="pop pop3">
-    <text class="side c" x="{col*2.5:.0f}" y="82">{m['longest']}</text>
-    <text class="lab c" x="{col*2.5:.0f}" y="108">LONGEST</text>
-    <text class="date c" x="{col*2.5:.0f}" y="150">{rng(m['longest_range'])}</text>
+    <!-- LONGEST -->
+    <text class="side c" x="{col*2.5:.0f}" y="92" fill="{FIRE}" filter="url(#{P}-glow)" opacity="0.9">{m['longest']}</text>
+    <text class="side c" x="{col*2.5:.0f}" y="92">{m['longest']}</text>
+    <text class="lab c" x="{col*2.5:.0f}" y="118">LONGEST STREAK</text>
+    <text class="date c" x="{col*2.5:.0f}" y="158">{rng(m['longest_range'])}</text>
   </g>
 </svg>
 '''
@@ -239,28 +252,36 @@ def activity_svg(days):
             ticks += (f'<line x1="{x:.1f}" y1="{pad_t}" x2="{x:.1f}" y2="{pad_t+plot_h}" stroke="{MUTED}" stroke-opacity="0.10"/>'
                       f'<text x="{x:.1f}" y="{H-pad_b+20}" class="mlab">{dt.strftime("%b")}</text>')
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="Contribution graph, peak {mx} per day">
+    total = sum(counts)
+    baseline = pad_t + plot_h
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="Contribution graph, peak {mx} per day, {total} contributions this year">
   {defs_block(P)}
   {base_style()}
   <style>
-    .title {{ font: 700 16px {FONT}; fill: {TEXT}; }}
-    .mlab {{ font: 400 11px {MONO}; fill: {MUTED}; text-anchor: middle; }}
-    .chip {{ font: 600 11px {MONO}; fill: {ACCENT}; }}
-    .pk {{ font: 700 11px {MONO}; fill: {FIRE}; text-anchor: middle; }}
+    .title {{ font: 800 17px {FONT}; fill: {TEXT}; letter-spacing: .2px; }}
+    .sub {{ font: 400 11px {FONT}; fill: {MUTED}; }}
+    .mlab {{ font: 500 10.5px {MONO}; fill: {MUTED}; text-anchor: middle; }}
+    .chip {{ font: 700 10.5px {MONO}; fill: {ACCENT}; }}
+    .pk {{ font: 800 11px {MONO}; fill: {FIRE}; text-anchor: middle; }}
   </style>
   {panel_bg(W, H, P)}
-  <text class="title" x="{pad_l}" y="30">Contribution Graph</text>
-  <rect x="{pad_l+170}" y="18" width="92" height="18" rx="9" fill="rgba(34,211,238,.10)"/>
-  <text class="chip" x="{pad_l+181}" y="31">peak {mx}/day</text>
-  {ticks}
-  <path class="pop" d="{area}" fill="url(#{P}-area)"/>
-  <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="3" stroke-opacity="0.5" filter="url(#{P}-glow)"
-        pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" class="drawline"/>
-  <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="2" stroke-linejoin="round"
-        pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" class="drawline"/>
-  <circle class="glowpulse" cx="{pkx:.1f}" cy="{pky:.1f}" r="4" fill="{FIRE}" filter="url(#{P}-glow)"/>
-  <text class="pk" x="{pkx:.1f}" y="{pky-10:.1f}">{mx}</text>
-  <circle cx="{endx:.1f}" cy="{endy:.1f}" r="3.5" fill="{ACCENT}" filter="url(#{P}-glow)"/>
+  <circle cx="{pad_l+4}" cy="25" r="4" fill="{ACCENT}" filter="url(#{P}-glow)"/>
+  <text class="title" x="{pad_l+16}" y="30">Contribution Graph</text>
+  <text class="sub" x="{pad_l+16}" y="46">last 12 months</text>
+  <rect x="{W-pad_r-104:.0f}" y="17" width="104" height="20" rx="10" fill="rgba(34,211,238,.10)" stroke="rgba(34,211,238,.22)"/>
+  <text class="chip" x="{W-pad_r-92:.0f}" y="31">peak {mx}/day</text>
+  <g class="fade">
+    <line x1="{pad_l}" y1="{baseline:.0f}" x2="{W-pad_r}" y2="{baseline:.0f}" stroke="{MUTED}" stroke-opacity="0.18"/>
+    {ticks}
+    <path d="{area}" fill="url(#{P}-area)"/>
+    <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="3.5" stroke-opacity="0.45" stroke-linejoin="round" filter="url(#{P}-glow)"/>
+    <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="2" stroke-linejoin="round"/>
+    <line x1="{pkx:.1f}" y1="{pky+3:.1f}" x2="{pkx:.1f}" y2="{pky-6:.1f}" stroke="{FIRE}" stroke-opacity="0.6"/>
+    <circle class="glowpulse" cx="{pkx:.1f}" cy="{pky:.1f}" r="4.5" fill="{FIRE}" filter="url(#{P}-glow)"/>
+    <circle cx="{pkx:.1f}" cy="{pky:.1f}" r="2.5" fill="{FIRE}"/>
+    <text class="pk" x="{pkx:.1f}" y="{pky-12:.1f}">{mx}</text>
+    <circle cx="{endx:.1f}" cy="{endy:.1f}" r="3.5" fill="{ACCENT}" filter="url(#{P}-glow)"/>
+  </g>
 </svg>
 '''
 
