@@ -1,0 +1,62 @@
+name: Generate GitHub Metrics
+
+on:
+  schedule:
+    # Runs every 12 hours
+    - cron: "30 */12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch all-time contribution history
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          created=$(gh api graphql -f query="{ user(login:\"$USER\"){ createdAt } }" -q '.data.user.createdAt')
+          start_year=${created:0:4}
+          now=$(date -u +%Y-%m-%d)
+          end_year=$(date -u +%Y)
+          : > assets/.contrib-daily.txt
+          Q='query($login:String!,$f:DateTime!,$t:DateTime!){ user(login:$login){ contributionsCollection(from:$f,to:$t){ contributionCalendar{ weeks{ contributionDays{ date contributionCount } } } } } }'
+          for y in $(seq "$start_year" "$end_year"); do
+            f="${y}-01-01T00:00:00Z"
+            t="${y}-12-31T23:59:59Z"
+            # clamp final window to "now" so we never request the future
+            if [ "$y" = "$end_year" ]; then t="${now}T23:59:59Z"; fi
+            gh api graphql -f query="$Q" -F login="$USER" -F f="$f" -F t="$t" \
+              -q '.data.user.contributionsCollection.contributionCalendar.weeks[].contributionDays[] | "\(.date) \(.contributionCount)"' \
+              >> assets/.contrib-daily.txt
+          done
+          sort -u assets/.contrib-daily.txt -o assets/.contrib-daily.txt
+          echo "days: $(wc -l < assets/.contrib-daily.txt)"
+
+      - name: Generate SVGs
+        run: python scripts/generate_metrics.py assets/.contrib-daily.txt
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/streak-stats.svg assets/activity-graph.svg assets/.contrib-daily.txt
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: refresh GitHub metrics"
+            git push
+          fi

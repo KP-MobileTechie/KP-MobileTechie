@@ -179,7 +179,7 @@ Uber-style taxi and carpooling platform with live driver tracking, route optimiz
 
 <div align="center">
 
-<img src="https://streak-stats.demolab.com?user=KP-MobileTechie&theme=tokyonight&hide_border=true&background=06060b&ring=22d3ee&fire=f472b6&currStreakLabel=a78bfa" alt="GitHub streak" width="100%" style="max-width:495px"/>
+<img src="./assets/streak-stats.svg" alt="GitHub streak" width="100%" style="max-width:495px"/>
 
 <br/><br/>
 
@@ -193,7 +193,7 @@ Uber-style taxi and carpooling platform with live driver tracking, route optimiz
 
 <br/><br/>
 
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=KP-MobileTechie&theme=react-dark&bg_color=06060b&color=e7e9ee&line=22d3ee&point=a78bfa&hide_border=true&area=true&area_color=22d3ee" width="100%" alt="Contribution graph"/>
+<img src="./assets/activity-graph.svg" width="100%" alt="Contribution graph"/>
 
 </div>
 
