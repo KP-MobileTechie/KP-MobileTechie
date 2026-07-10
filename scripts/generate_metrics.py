@@ -133,8 +133,11 @@ def compute(days):
         cur += 1
         i -= 1
 
-    first = dates[0] if dates else None
-    last = dates[-1] if dates else None
+    # total range spans the FIRST real contribution to the last, not the
+    # zero-padded calendar edges (which start at a January 1 year boundary).
+    nonzero = [d for d, c in items if c > 0]
+    first = nonzero[0] if nonzero else (dates[0] if dates else None)
+    last = nonzero[-1] if nonzero else (dates[-1] if dates else None)
     return {
         "total": total,
         "total_range": (first, last),
@@ -146,12 +149,15 @@ def compute(days):
 
 
 def streak_svg(m):
-    W, H, P = 495, 200, "s"
+    W, H, P = 495, 210, "s"
     col = W / 3
     cx = col * 1.5
-    cy = 84
-    r = 40
-    # visible fraction of the ring = current / longest (caps at full)
+    # shared layout grid: every column aligns on the same three rows
+    BIG_Y = 104      # baseline of the big number / vertical center of the ring
+    LAB_Y = 154      # label row (all three columns)
+    DATE_Y = 178     # date row (all three columns)
+    cy = 96          # ring center
+    r = 37
     frac = min(m["current"] / m["longest"], 1.0) if m["longest"] else 0.0
     circ = 2 * 3.14159265 * r
     dash = f'{circ*frac:.1f} {circ:.1f}'
@@ -163,34 +169,34 @@ def streak_svg(m):
         return fmt_date(a) if a == b else f"{fmt_date(a)} → {fmt_date(b)}"
 
     def panel(x, accent):
-        return (f'<g>'
-                f'<rect x="{x+13:.0f}" y="26" width="{col-26:.0f}" height="{H-52}" rx="14" '
+        return (f'<rect x="{x+13:.0f}" y="24" width="{col-26:.0f}" height="{H-48}" rx="14" '
                 f'fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/>'
-                f'<rect x="{x+13:.0f}" y="26" width="{col-26:.0f}" height="2.5" rx="1.2" '
-                f'fill="{accent}" fill-opacity="0.55"/>'
-                f'</g>')
+                f'<rect x="{x+13:.0f}" y="24" width="{col-26:.0f}" height="2.5" rx="1.2" '
+                f'fill="{accent}" fill-opacity="0.6"/>')
+
+    def side(x, value, label, rr, accent):
+        return (f'<text class="side c" x="{x:.0f}" y="{BIG_Y}" fill="{accent}" filter="url(#{P}-glow)" opacity="0.85">{value}</text>'
+                f'<text class="side c" x="{x:.0f}" y="{BIG_Y}">{value}</text>'
+                f'<text class="lab c" x="{x:.0f}" y="{LAB_Y}">{label}</text>'
+                f'<text class="date c" x="{x:.0f}" y="{DATE_Y}">{rng(rr)}</text>')
 
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="GitHub streak: {m['current']} day current streak, {m['longest']} longest, {m['total']} total contributions">
   {defs_block(P)}
   {base_style()}
   <style>
-    .side {{ font: 700 27px {MONO}; fill: {TEXT}; letter-spacing: -.5px; }}
-    .cur {{ font: 800 42px {MONO}; fill: {TEXT}; letter-spacing: -1px; }}
-    .unit {{ font: 600 10px {FONT}; fill: {MUTED}; letter-spacing: 2px; }}
-    .lab {{ font: 700 9.5px {FONT}; fill: {MUTED}; letter-spacing: 2px; }}
-    .clab {{ font: 800 10px {FONT}; fill: {LABEL}; letter-spacing: 2.4px; }}
-    .date {{ font: 400 9px {MONO}; fill: {MUTED}; }}
+    .side {{ font: 700 28px {MONO}; fill: {TEXT}; letter-spacing: -.5px; }}
+    .cur {{ font: 800 38px {MONO}; fill: {TEXT}; letter-spacing: -1px; }}
+    .unit {{ font: 600 8.5px {FONT}; fill: {MUTED}; letter-spacing: 2px; }}
+    .lab {{ font: 700 8.5px {FONT}; fill: {MUTED}; letter-spacing: 1.4px; }}
+    .clab {{ font: 800 9px {FONT}; fill: {LABEL}; letter-spacing: 1.8px; }}
+    .date {{ font: 400 8.5px {MONO}; fill: {MUTED}; }}
     .c {{ text-anchor: middle; }}
   </style>
   {panel_bg(W, H, P)}
   {panel(0, ACCENT)}{panel(col, LABEL)}{panel(col*2, FIRE)}
 
   <g class="fade">
-    <!-- TOTAL -->
-    <text class="side c" x="{col*0.5:.0f}" y="92" fill="{ACCENT}" filter="url(#{P}-glow)" opacity="0.9">{m['total']}</text>
-    <text class="side c" x="{col*0.5:.0f}" y="92">{m['total']}</text>
-    <text class="lab c" x="{col*0.5:.0f}" y="118">TOTAL CONTRIBUTIONS</text>
-    <text class="date c" x="{col*0.5:.0f}" y="158">{rng(m['total_range'])}</text>
+    {side(col*0.5, m['total'], 'TOTAL CONTRIBUTIONS', m['total_range'], ACCENT)}
 
     <!-- CURRENT (hero) -->
     <circle cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
@@ -200,17 +206,13 @@ def streak_svg(m):
     <circle cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="url(#{P}-ring)" stroke-width="2.5"
             stroke-linecap="round" stroke-dasharray="{dash}"
             transform="rotate(-90 {cx:.0f} {cy})"/>
-    <path transform="translate({cx-8:.0f},20) scale(0.85)" fill="{FIRE}" filter="url(#{P}-glow)" d="M9 0c.5 3-1.7 4.3-2.8 5.8C4.9 7.6 4 9.3 4 11.2 4 14.4 6.2 17 9 17s5-2.6 5-5.8c0-2.4-1.4-3.9-2.3-5.4C10.9 4.5 11 2 9 0z"/>
-    <text class="cur c" x="{cx:.0f}" y="{cy+6}">{m['current']}</text>
-    <text class="unit c" x="{cx:.0f}" y="{cy+22}">DAYS</text>
-    <text class="clab c" x="{cx:.0f}" y="152">CURRENT STREAK</text>
-    <text class="date c" x="{cx:.0f}" y="170">{rng(m['current_range'])}</text>
+    <path transform="translate({cx-8:.0f},{cy-r-16:.0f}) scale(0.8)" fill="{FIRE}" filter="url(#{P}-glow)" d="M9 0c.5 3-1.7 4.3-2.8 5.8C4.9 7.6 4 9.3 4 11.2 4 14.4 6.2 17 9 17s5-2.6 5-5.8c0-2.4-1.4-3.9-2.3-5.4C10.9 4.5 11 2 9 0z"/>
+    <text class="cur c" x="{cx:.0f}" y="{cy+4}">{m['current']}</text>
+    <text class="unit c" x="{cx:.0f}" y="{cy+20}">DAYS</text>
+    <text class="clab c" x="{cx:.0f}" y="{LAB_Y}">CURRENT STREAK</text>
+    <text class="date c" x="{cx:.0f}" y="{DATE_Y}">{rng(m['current_range'])}</text>
 
-    <!-- LONGEST -->
-    <text class="side c" x="{col*2.5:.0f}" y="92" fill="{FIRE}" filter="url(#{P}-glow)" opacity="0.9">{m['longest']}</text>
-    <text class="side c" x="{col*2.5:.0f}" y="92">{m['longest']}</text>
-    <text class="lab c" x="{col*2.5:.0f}" y="118">LONGEST STREAK</text>
-    <text class="date c" x="{col*2.5:.0f}" y="158">{rng(m['longest_range'])}</text>
+    {side(col*2.5, m['longest'], 'LONGEST STREAK', m['longest_range'], FIRE)}
   </g>
 </svg>
 '''
