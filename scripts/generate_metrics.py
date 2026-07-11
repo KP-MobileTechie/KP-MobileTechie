@@ -13,67 +13,50 @@ import sys
 import datetime
 from pathlib import Path
 
-# ---- theme (matches the old widget colors) ----
-BG = "#06060b"
-ACCENT = "#22d3ee"      # ring / line
-FIRE = "#f472b6"        # fire + area accent
-LABEL = "#a78bfa"       # current-streak label
-TEXT = "#e7e9ee"
-MUTED = "#8b8ba7"
+# ---- theme: "precision spec sheet" ----
+# Grounded in an engineering datasheet: GitHub-canvas base so the cards blend
+# into the README, a single restrained cyan accent, hairlines, tabular mono
+# numerals. No glow, no glass, no secondary accents.
+BG = "#0d1117"          # GitHub dark canvas
+PANEL = "#0f141b"       # barely-raised surface
+ACCENT = "#22d3ee"      # the one accent
+TEXT = "#f0f6fc"        # primary figures
+MUTED = "#7d8590"       # labels, captions, axis
+HAIR = "rgba(240,246,252,0.10)"   # hairline rules / borders
+GRID = "rgba(240,246,252,0.055)"  # chart gridlines
 FONT = "'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif"
 MONO = "ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace"
 
 
 def defs_block(p):
     return f'''<defs>
-    <radialGradient id="{p}-glowA" cx="12%" cy="0%" r="80%">
-      <stop offset="0%" stop-color="{ACCENT}" stop-opacity="0.10"/>
-      <stop offset="55%" stop-color="{ACCENT}" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="{p}-glowB" cx="95%" cy="100%" r="80%">
-      <stop offset="0%" stop-color="{FIRE}" stop-opacity="0.10"/>
-      <stop offset="55%" stop-color="{FIRE}" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="{p}-ring" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="{ACCENT}"/>
-      <stop offset="100%" stop-color="{LABEL}"/>
-    </linearGradient>
     <linearGradient id="{p}-area" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="{ACCENT}" stop-opacity="0.45"/>
+      <stop offset="0%" stop-color="{ACCENT}" stop-opacity="0.16"/>
       <stop offset="100%" stop-color="{ACCENT}" stop-opacity="0"/>
     </linearGradient>
-    <filter id="{p}-glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="3.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <pattern id="{p}-dots" width="14" height="14" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="{TEXT}" fill-opacity="0.03"/>
-    </pattern>
   </defs>'''
 
 
 def base_style():
-    # STATIC-FIRST: every element is fully visible by default (opacity 1, no
-    # hidden dash offsets). Animations are enhancement-only and can never leave
-    # content hidden, so the card renders correctly even if animation never runs.
+    # STATIC-FIRST: everything is fully visible by default. Motion is a single
+    # gentle fade-in enhancement that can never leave content hidden, plus a
+    # slow "live" pulse on the status dot. Reduced motion disables both.
     return f'''<style>
     text {{ font-family: {FONT}; }}
     @keyframes fadein {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
-    @keyframes pulse {{ 0%,100% {{ opacity: .5; }} 50% {{ opacity: 1; }} }}
-    .fade {{ animation: fadein .9s ease-out; }}
-    .glowpulse {{ animation: pulse 3.5s ease-in-out infinite; }}
+    @keyframes blip {{ 0%,100% {{ opacity: 1; }} 50% {{ opacity: .35; }} }}
+    .fade {{ animation: fadein .8s ease-out; }}
+    .live {{ animation: blip 2.4s ease-in-out infinite; }}
     @media (prefers-reduced-motion: reduce) {{
       .fade {{ animation: none; }}
-      .glowpulse {{ animation: none; opacity: 1; }}
+      .live {{ animation: none; opacity: 1; }}
     }}
   </style>'''
 
 
 def panel_bg(w, h, p):
-    return f'''<rect width="{w}" height="{h}" rx="12" fill="{BG}"/>
-  <rect width="{w}" height="{h}" rx="12" fill="url(#{p}-glowA)"/>
-  <rect width="{w}" height="{h}" rx="12" fill="url(#{p}-glowB)"/>
-  <rect width="{w}" height="{h}" rx="12" fill="url(#{p}-dots)"/>'''
+    # A single hairline-bordered card on the GitHub canvas.
+    return (f'<rect x="0.5" y="0.5" width="{w-1}" height="{h-1}" rx="13" fill="{BG}" stroke="{HAIR}"/>')
 
 
 def load_days(path):
@@ -87,14 +70,34 @@ def load_days(path):
     return dict(sorted(days.items()))
 
 
-def fmt(d):
-    return datetime.date.fromisoformat(d).strftime("%b %-d, %Y") if hasattr(datetime.date, "strftime") else d
-
-
 def fmt_date(d):
     # cross-platform (no %-d on Windows)
     dt = datetime.date.fromisoformat(d)
     return f"{dt.strftime('%b')} {dt.day}, {dt.year}"
+
+
+def fmt_short(d):
+    dt = datetime.date.fromisoformat(d)
+    return f"{dt.strftime('%b')} {dt.day}"
+
+
+def fmt_my(d):
+    dt = datetime.date.fromisoformat(d)
+    return f"{dt.strftime('%b')} '{dt.strftime('%y')}"
+
+
+def span(rr):
+    a, b = rr
+    if not a:
+        return "—"
+    if a == b:
+        return fmt_short(a)
+    # omit year when both ends share it
+    ay = a[:4]
+    by = b[:4]
+    if ay == by:
+        return f"{fmt_short(a)} – {fmt_short(b)}"
+    return f"{fmt_my(a)} – {fmt_my(b)}"
 
 
 def compute(days):
@@ -149,70 +152,53 @@ def compute(days):
 
 
 def streak_svg(m):
-    W, H, P = 495, 210, "s"
-    col = W / 3
-    cx = col * 1.5
-    # shared layout grid: every column aligns on the same three rows
-    BIG_Y = 104      # baseline of the big number / vertical center of the ring
-    LAB_Y = 154      # label row (all three columns)
-    DATE_Y = 178     # date row (all three columns)
-    cy = 96          # ring center
-    r = 37
-    frac = min(m["current"] / m["longest"], 1.0) if m["longest"] else 0.0
-    circ = 2 * 3.14159265 * r
-    dash = f'{circ*frac:.1f} {circ:.1f}'
+    W, H, P = 495, 172, "s"
+    PADX = 30
+    inner = W - 2 * PADX
+    # three columns, centered
+    cxs = [PADX + inner * (1 / 6), PADX + inner * (1 / 2), PADX + inner * (5 / 6)]
+    # baseline grid rows
+    NUM_Y = 104
+    LAB_Y = 126
+    RULE_Y = 134
+    CAP_Y = 152
 
-    def rng(rr):
-        a, b = rr
-        if not a:
-            return "-"
-        return fmt_date(a) if a == b else f"{fmt_date(a)} → {fmt_date(b)}"
+    stats = [
+        (f"{m['total']:,}", "TOTAL", f"since {fmt_my(m['total_range'][0])}" if m['total_range'][0] else "—", False),
+        (f"{m['current']}", "CURRENT", span(m['current_range']), True),
+        (f"{m['longest']}", "LONGEST", span(m['longest_range']), False),
+    ]
 
-    def panel(x, accent):
-        return (f'<rect x="{x+13:.0f}" y="24" width="{col-26:.0f}" height="{H-48}" rx="14" '
-                f'fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/>'
-                f'<rect x="{x+13:.0f}" y="24" width="{col-26:.0f}" height="2.5" rx="1.2" '
-                f'fill="{accent}" fill-opacity="0.6"/>')
+    cells = ""
+    for cx, (val, lab, cap, hero) in zip(cxs, stats):
+        num_cls = "num hero" if hero else "num"
+        rule_col = ACCENT if hero else HAIR
+        rule_w = 30 if hero else 22
+        cells += (
+            f'<text class="{num_cls}" x="{cx:.1f}" y="{NUM_Y}">{val}</text>'
+            f'<text class="lab" x="{cx:.1f}" y="{LAB_Y}">{lab}</text>'
+            f'<line x1="{cx-rule_w/2:.1f}" y1="{RULE_Y}" x2="{cx+rule_w/2:.1f}" y2="{RULE_Y}" stroke="{rule_col}" stroke-width="1.5"/>'
+            f'<text class="cap" x="{cx:.1f}" y="{CAP_Y}">{cap}</text>'
+        )
 
-    def side(x, value, label, rr, accent):
-        return (f'<text class="side c" x="{x:.0f}" y="{BIG_Y}" fill="{accent}" filter="url(#{P}-glow)" opacity="0.85">{value}</text>'
-                f'<text class="side c" x="{x:.0f}" y="{BIG_Y}">{value}</text>'
-                f'<text class="lab c" x="{x:.0f}" y="{LAB_Y}">{label}</text>'
-                f'<text class="date c" x="{x:.0f}" y="{DATE_Y}">{rng(rr)}</text>')
-
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="GitHub streak: {m['current']} day current streak, {m['longest']} longest, {m['total']} total contributions">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="Contribution streak: {m['current']} day current streak, {m['longest']} longest, {m['total']} total contributions">
   {defs_block(P)}
   {base_style()}
   <style>
-    .side {{ font: 700 28px {MONO}; fill: {TEXT}; letter-spacing: -.5px; }}
-    .cur {{ font: 800 38px {MONO}; fill: {TEXT}; letter-spacing: -1px; }}
-    .unit {{ font: 600 8.5px {FONT}; fill: {MUTED}; letter-spacing: 2px; }}
-    .lab {{ font: 700 8.5px {FONT}; fill: {MUTED}; letter-spacing: 1.4px; }}
-    .clab {{ font: 800 9px {FONT}; fill: {LABEL}; letter-spacing: 1.8px; }}
-    .date {{ font: 400 8.5px {MONO}; fill: {MUTED}; }}
-    .c {{ text-anchor: middle; }}
+    .eyebrow {{ font: 700 10px {FONT}; fill: {MUTED}; letter-spacing: 2.4px; }}
+    .meta {{ font: 600 10px {MONO}; fill: {MUTED}; }}
+    .num {{ font: 500 34px {MONO}; fill: {TEXT}; letter-spacing: -1px; text-anchor: middle; }}
+    .hero {{ font-weight: 700; fill: {ACCENT}; }}
+    .lab {{ font: 700 9.5px {FONT}; fill: {MUTED}; letter-spacing: 1.8px; text-anchor: middle; }}
+    .cap {{ font: 400 9.5px {MONO}; fill: {MUTED}; text-anchor: middle; }}
   </style>
   {panel_bg(W, H, P)}
-  {panel(0, ACCENT)}{panel(col, LABEL)}{panel(col*2, FIRE)}
-
   <g class="fade">
-    {side(col*0.5, m['total'], 'TOTAL CONTRIBUTIONS', m['total_range'], ACCENT)}
-
-    <!-- CURRENT (hero) -->
-    <circle cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
-    <circle class="glowpulse" cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="url(#{P}-ring)" stroke-width="5"
-            stroke-linecap="round" stroke-dasharray="{dash}"
-            transform="rotate(-90 {cx:.0f} {cy})" filter="url(#{P}-glow)"/>
-    <circle cx="{cx:.0f}" cy="{cy}" r="{r}" stroke="url(#{P}-ring)" stroke-width="2.5"
-            stroke-linecap="round" stroke-dasharray="{dash}"
-            transform="rotate(-90 {cx:.0f} {cy})"/>
-    <path transform="translate({cx-8:.0f},{cy-r-16:.0f}) scale(0.8)" fill="{FIRE}" filter="url(#{P}-glow)" d="M9 0c.5 3-1.7 4.3-2.8 5.8C4.9 7.6 4 9.3 4 11.2 4 14.4 6.2 17 9 17s5-2.6 5-5.8c0-2.4-1.4-3.9-2.3-5.4C10.9 4.5 11 2 9 0z"/>
-    <text class="cur c" x="{cx:.0f}" y="{cy+4}">{m['current']}</text>
-    <text class="unit c" x="{cx:.0f}" y="{cy+20}">DAYS</text>
-    <text class="clab c" x="{cx:.0f}" y="{LAB_Y}">CURRENT STREAK</text>
-    <text class="date c" x="{cx:.0f}" y="{DATE_Y}">{rng(m['current_range'])}</text>
-
-    {side(col*2.5, m['longest'], 'LONGEST STREAK', m['longest_range'], FIRE)}
+    <text class="eyebrow" x="{PADX}" y="40">CONTRIBUTION STREAK</text>
+    <circle class="live" cx="{W-PADX-52}" cy="36" r="3" fill="{ACCENT}"/>
+    <text class="meta" x="{W-PADX-42}" y="40">active</text>
+    <line x1="{PADX}" y1="56" x2="{W-PADX}" y2="56" stroke="{HAIR}"/>
+    {cells}
   </g>
 </svg>
 '''
@@ -223,66 +209,71 @@ def activity_svg(days):
     counts = [c for _, c in items]
     dates = [datetime.date.fromisoformat(d) for d, _ in items]
     n = len(items)
-    W, H, P = 820, 260, "a"
-    pad_l, pad_r, pad_t, pad_b = 44, 24, 58, 42
+    W, H, P = 820, 232, "a"
+    pad_l, pad_r, pad_t, pad_b = 52, 26, 88, 34
     plot_w, plot_h = W - pad_l - pad_r, H - pad_t - pad_b
     mx = max(max(counts), 1)
+    total = sum(counts)
+    base = pad_t + plot_h
 
     def px(i):
         return pad_l + plot_w * i / (n - 1 if n > 1 else 1)
 
     def py(v):
-        return pad_t + plot_h - plot_h * v / mx
+        return base - plot_h * v / mx
 
     pts = [(px(i), py(c)) for i, c in enumerate(counts)]
     line = "M " + " L ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
-    area = (f"M {pts[0][0]:.1f},{pad_t+plot_h:.1f} L "
+    area = (f"M {pts[0][0]:.1f},{base:.1f} L "
             + " L ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
-            + f" L {pts[-1][0]:.1f},{pad_t+plot_h:.1f} Z")
+            + f" L {pts[-1][0]:.1f},{base:.1f} Z")
 
     peak_i = counts.index(mx)
     pkx, pky = pts[peak_i]
     endx, endy = pts[-1]
 
+    # horizontal gridlines + left y-axis labels (0, mid, peak)
+    grid = ""
+    for v in (0, mx // 2, mx):
+        y = py(v)
+        grid += (f'<line x1="{pad_l}" y1="{y:.1f}" x2="{W-pad_r}" y2="{y:.1f}" stroke="{GRID}"/>'
+                 f'<text class="yl" x="{pad_l-10}" y="{y+3:.1f}">{v}</text>')
+
+    # month labels
     ticks = ""
     seen = set()
     for i, dt in enumerate(dates):
         key = (dt.year, dt.month)
         if dt.day <= 7 and key not in seen:
             seen.add(key)
-            x = px(i)
-            ticks += (f'<line x1="{x:.1f}" y1="{pad_t}" x2="{x:.1f}" y2="{pad_t+plot_h}" stroke="{MUTED}" stroke-opacity="0.10"/>'
-                      f'<text x="{x:.1f}" y="{H-pad_b+20}" class="mlab">{dt.strftime("%b")}</text>')
+            ticks += f'<text class="ml" x="{px(i):.1f}" y="{base+22:.0f}">{dt.strftime("%b")}</text>'
 
-    total = sum(counts)
-    baseline = pad_t + plot_h
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="Contribution graph, peak {mx} per day, {total} contributions this year">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" fill="none" role="img" aria-label="Contribution activity, peak {mx} per day, {total} contributions in the last 12 months">
   {defs_block(P)}
   {base_style()}
   <style>
-    .title {{ font: 800 17px {FONT}; fill: {TEXT}; letter-spacing: .2px; }}
+    .title {{ font: 600 16px {FONT}; fill: {TEXT}; letter-spacing: .2px; }}
     .sub {{ font: 400 11px {FONT}; fill: {MUTED}; }}
-    .mlab {{ font: 500 10.5px {MONO}; fill: {MUTED}; text-anchor: middle; }}
-    .chip {{ font: 700 10.5px {MONO}; fill: {ACCENT}; }}
-    .pk {{ font: 800 11px {MONO}; fill: {FIRE}; text-anchor: middle; }}
+    .kv {{ font: 400 11px {FONT}; fill: {MUTED}; text-anchor: end; }}
+    .kn {{ font: 600 11px {MONO}; fill: {TEXT}; text-anchor: end; }}
+    .yl {{ font: 400 9.5px {MONO}; fill: {MUTED}; text-anchor: end; }}
+    .ml {{ font: 400 10px {MONO}; fill: {MUTED}; text-anchor: middle; }}
+    .pk {{ font: 600 10px {MONO}; fill: {ACCENT}; text-anchor: middle; }}
   </style>
   {panel_bg(W, H, P)}
-  <circle cx="{pad_l+4}" cy="25" r="4" fill="{ACCENT}" filter="url(#{P}-glow)"/>
-  <text class="title" x="{pad_l+16}" y="30">Contribution Graph</text>
-  <text class="sub" x="{pad_l+16}" y="46">last 12 months</text>
-  <rect x="{W-pad_r-104:.0f}" y="17" width="104" height="20" rx="10" fill="rgba(34,211,238,.10)" stroke="rgba(34,211,238,.22)"/>
-  <text class="chip" x="{W-pad_r-92:.0f}" y="31">peak {mx}/day</text>
+  <text class="title" x="{pad_l}" y="38">Contribution activity</text>
+  <text class="sub" x="{pad_l}" y="56">last 12 months</text>
+  <text class="kn" x="{W-pad_r}" y="34">{total:,}</text>
+  <text class="kv" x="{W-pad_r}" y="50">contributions · peak {mx}/day</text>
+  <line x1="{pad_l}" y1="68" x2="{W-pad_r}" y2="68" stroke="{HAIR}"/>
   <g class="fade">
-    <line x1="{pad_l}" y1="{baseline:.0f}" x2="{W-pad_r}" y2="{baseline:.0f}" stroke="{MUTED}" stroke-opacity="0.18"/>
+    {grid}
     {ticks}
     <path d="{area}" fill="url(#{P}-area)"/>
-    <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="3.5" stroke-opacity="0.45" stroke-linejoin="round" filter="url(#{P}-glow)"/>
-    <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="2" stroke-linejoin="round"/>
-    <line x1="{pkx:.1f}" y1="{pky+3:.1f}" x2="{pkx:.1f}" y2="{pky-6:.1f}" stroke="{FIRE}" stroke-opacity="0.6"/>
-    <circle class="glowpulse" cx="{pkx:.1f}" cy="{pky:.1f}" r="4.5" fill="{FIRE}" filter="url(#{P}-glow)"/>
-    <circle cx="{pkx:.1f}" cy="{pky:.1f}" r="2.5" fill="{FIRE}"/>
-    <text class="pk" x="{pkx:.1f}" y="{pky-12:.1f}">{mx}</text>
-    <circle cx="{endx:.1f}" cy="{endy:.1f}" r="3.5" fill="{ACCENT}" filter="url(#{P}-glow)"/>
+    <path d="{line}" fill="none" stroke="{ACCENT}" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="{pkx:.1f}" cy="{pky:.1f}" r="3" fill="{BG}" stroke="{ACCENT}" stroke-width="1.75"/>
+    <text class="pk" x="{pkx:.1f}" y="{pky-9:.1f}">{mx}</text>
+    <circle cx="{endx:.1f}" cy="{endy:.1f}" r="2.5" fill="{ACCENT}"/>
   </g>
 </svg>
 '''

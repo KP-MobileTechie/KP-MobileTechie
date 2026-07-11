@@ -1,72 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="495" height="210" viewBox="0 0 495 210" fill="none" role="img" aria-label="GitHub streak: 87 day current streak, 87 longest, 1382 total contributions">
+<svg xmlns="http://www.w3.org/2000/svg" width="495" height="172" viewBox="0 0 495 172" fill="none" role="img" aria-label="Contribution streak: 87 day current streak, 87 longest, 1382 total contributions">
   <defs>
-    <radialGradient id="s-glowA" cx="12%" cy="0%" r="80%">
-      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.10"/>
-      <stop offset="55%" stop-color="#22d3ee" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="s-glowB" cx="95%" cy="100%" r="80%">
-      <stop offset="0%" stop-color="#f472b6" stop-opacity="0.10"/>
-      <stop offset="55%" stop-color="#f472b6" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="s-ring" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="100%" stop-color="#a78bfa"/>
-    </linearGradient>
     <linearGradient id="s-area" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.45"/>
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.16"/>
       <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
     </linearGradient>
-    <filter id="s-glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="3.2" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <pattern id="s-dots" width="14" height="14" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="#e7e9ee" fill-opacity="0.03"/>
-    </pattern>
   </defs>
   <style>
     text { font-family: 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; }
     @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes pulse { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
-    .fade { animation: fadein .9s ease-out; }
-    .glowpulse { animation: pulse 3.5s ease-in-out infinite; }
+    @keyframes blip { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+    .fade { animation: fadein .8s ease-out; }
+    .live { animation: blip 2.4s ease-in-out infinite; }
     @media (prefers-reduced-motion: reduce) {
       .fade { animation: none; }
-      .glowpulse { animation: none; opacity: 1; }
+      .live { animation: none; opacity: 1; }
     }
   </style>
   <style>
-    .side { font: 700 28px ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace; fill: #e7e9ee; letter-spacing: -.5px; }
-    .cur { font: 800 38px ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace; fill: #e7e9ee; letter-spacing: -1px; }
-    .unit { font: 600 8.5px 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; fill: #8b8ba7; letter-spacing: 2px; }
-    .lab { font: 700 8.5px 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; fill: #8b8ba7; letter-spacing: 1.4px; }
-    .clab { font: 800 9px 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; fill: #a78bfa; letter-spacing: 1.8px; }
-    .date { font: 400 8.5px ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace; fill: #8b8ba7; }
-    .c { text-anchor: middle; }
+    .eyebrow { font: 700 10px 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; fill: #7d8590; letter-spacing: 2.4px; }
+    .meta { font: 600 10px ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace; fill: #7d8590; }
+    .num { font: 500 34px ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace; fill: #f0f6fc; letter-spacing: -1px; text-anchor: middle; }
+    .hero { font-weight: 700; fill: #22d3ee; }
+    .lab { font: 700 9.5px 'Segoe UI', Ubuntu, 'Helvetica Neue', Sans-Serif; fill: #7d8590; letter-spacing: 1.8px; text-anchor: middle; }
+    .cap { font: 400 9.5px ui-monospace, 'Cascadia Code', 'Segoe UI Mono', Consolas, monospace; fill: #7d8590; text-anchor: middle; }
   </style>
-  <rect width="495" height="210" rx="12" fill="#06060b"/>
-  <rect width="495" height="210" rx="12" fill="url(#s-glowA)"/>
-  <rect width="495" height="210" rx="12" fill="url(#s-glowB)"/>
-  <rect width="495" height="210" rx="12" fill="url(#s-dots)"/>
-  <rect x="13" y="24" width="139" height="162" rx="14" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/><rect x="13" y="24" width="139" height="2.5" rx="1.2" fill="#22d3ee" fill-opacity="0.6"/><rect x="178" y="24" width="139" height="162" rx="14" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/><rect x="178" y="24" width="139" height="2.5" rx="1.2" fill="#a78bfa" fill-opacity="0.6"/><rect x="343" y="24" width="139" height="162" rx="14" fill="rgba(255,255,255,.025)" stroke="rgba(255,255,255,.08)"/><rect x="343" y="24" width="139" height="2.5" rx="1.2" fill="#f472b6" fill-opacity="0.6"/>
-
+  <rect x="0.5" y="0.5" width="494" height="171" rx="13" fill="#0d1117" stroke="rgba(240,246,252,0.10)"/>
   <g class="fade">
-    <text class="side c" x="82" y="104" fill="#22d3ee" filter="url(#s-glow)" opacity="0.85">1382</text><text class="side c" x="82" y="104">1382</text><text class="lab c" x="82" y="154">TOTAL CONTRIBUTIONS</text><text class="date c" x="82" y="178">Jul 19, 2021 → Jul 10, 2026</text>
-
-    <!-- CURRENT (hero) -->
-    <circle cx="248" cy="96" r="37" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
-    <circle class="glowpulse" cx="248" cy="96" r="37" stroke="url(#s-ring)" stroke-width="5"
-            stroke-linecap="round" stroke-dasharray="232.5 232.5"
-            transform="rotate(-90 248 96)" filter="url(#s-glow)"/>
-    <circle cx="248" cy="96" r="37" stroke="url(#s-ring)" stroke-width="2.5"
-            stroke-linecap="round" stroke-dasharray="232.5 232.5"
-            transform="rotate(-90 248 96)"/>
-    <path transform="translate(240,43) scale(0.8)" fill="#f472b6" filter="url(#s-glow)" d="M9 0c.5 3-1.7 4.3-2.8 5.8C4.9 7.6 4 9.3 4 11.2 4 14.4 6.2 17 9 17s5-2.6 5-5.8c0-2.4-1.4-3.9-2.3-5.4C10.9 4.5 11 2 9 0z"/>
-    <text class="cur c" x="248" y="100">87</text>
-    <text class="unit c" x="248" y="116">DAYS</text>
-    <text class="clab c" x="248" y="154">CURRENT STREAK</text>
-    <text class="date c" x="248" y="178">Apr 15, 2026 → Jul 10, 2026</text>
-
-    <text class="side c" x="412" y="104" fill="#f472b6" filter="url(#s-glow)" opacity="0.85">87</text><text class="side c" x="412" y="104">87</text><text class="lab c" x="412" y="154">LONGEST STREAK</text><text class="date c" x="412" y="178">Apr 15, 2026 → Jul 10, 2026</text>
+    <text class="eyebrow" x="30" y="40">CONTRIBUTION STREAK</text>
+    <circle class="live" cx="413" cy="36" r="3" fill="#22d3ee"/>
+    <text class="meta" x="423" y="40">active</text>
+    <line x1="30" y1="56" x2="465" y2="56" stroke="rgba(240,246,252,0.10)"/>
+    <text class="num" x="102.5" y="104">1,382</text><text class="lab" x="102.5" y="126">TOTAL</text><line x1="91.5" y1="134" x2="113.5" y2="134" stroke="rgba(240,246,252,0.10)" stroke-width="1.5"/><text class="cap" x="102.5" y="152">since Jul '21</text><text class="num hero" x="247.5" y="104">87</text><text class="lab" x="247.5" y="126">CURRENT</text><line x1="232.5" y1="134" x2="262.5" y2="134" stroke="#22d3ee" stroke-width="1.5"/><text class="cap" x="247.5" y="152">Apr 15 – Jul 10</text><text class="num" x="392.5" y="104">87</text><text class="lab" x="392.5" y="126">LONGEST</text><line x1="381.5" y1="134" x2="403.5" y2="134" stroke="rgba(240,246,252,0.10)" stroke-width="1.5"/><text class="cap" x="392.5" y="152">Apr 15 – Jul 10</text>
   </g>
 </svg>
