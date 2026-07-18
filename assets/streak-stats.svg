@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="495" height="172" viewBox="0 0 495 172" fill="none" role="img" aria-label="Contribution streak: 94 day current streak, 94 longest, 1390 total contributions">
+<svg xmlns="http://www.w3.org/2000/svg" width="495" height="172" viewBox="0 0 495 172" fill="none" role="img" aria-label="Contribution streak: 95 day current streak, 95 longest, 1391 total contributions">
   <defs>
     <linearGradient id="s-area" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.16"/>
@@ -30,6 +30,6 @@
     <circle class="live" cx="413" cy="36" r="3" fill="#22d3ee"/>
     <text class="meta" x="423" y="40">active</text>
     <line x1="30" y1="56" x2="465" y2="56" stroke="rgba(240,246,252,0.10)"/>
-    <text class="num" x="102.5" y="104">1,390</text><text class="lab" x="102.5" y="126">TOTAL</text><line x1="91.5" y1="134" x2="113.5" y2="134" stroke="rgba(240,246,252,0.10)" stroke-width="1.5"/><text class="cap" x="102.5" y="152">since Jul '21</text><text class="num hero" x="247.5" y="104">94</text><text class="lab" x="247.5" y="126">CURRENT</text><line x1="232.5" y1="134" x2="262.5" y2="134" stroke="#22d3ee" stroke-width="1.5"/><text class="cap" x="247.5" y="152">Apr 15 – Jul 17</text><text class="num" x="392.5" y="104">94</text><text class="lab" x="392.5" y="126">LONGEST</text><line x1="381.5" y1="134" x2="403.5" y2="134" stroke="rgba(240,246,252,0.10)" stroke-width="1.5"/><text class="cap" x="392.5" y="152">Apr 15 – Jul 17</text>
+    <text class="num" x="102.5" y="104">1,391</text><text class="lab" x="102.5" y="126">TOTAL</text><line x1="91.5" y1="134" x2="113.5" y2="134" stroke="rgba(240,246,252,0.10)" stroke-width="1.5"/><text class="cap" x="102.5" y="152">since Jul '21</text><text class="num hero" x="247.5" y="104">95</text><text class="lab" x="247.5" y="126">CURRENT</text><line x1="232.5" y1="134" x2="262.5" y2="134" stroke="#22d3ee" stroke-width="1.5"/><text class="cap" x="247.5" y="152">Apr 15 – Jul 18</text><text class="num" x="392.5" y="104">95</text><text class="lab" x="392.5" y="126">LONGEST</text><line x1="381.5" y1="134" x2="403.5" y2="134" stroke="rgba(240,246,252,0.10)" stroke-width="1.5"/><text class="cap" x="392.5" y="152">Apr 15 – Jul 18</text>
   </g>
 </svg>
